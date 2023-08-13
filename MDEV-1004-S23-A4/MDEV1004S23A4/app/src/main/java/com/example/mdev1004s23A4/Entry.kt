@@ -1,4 +1,4 @@
-package com.example.mdev1004s23ice7c
+package com.example.mdev1004s23A4
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -8,10 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.google.android.material.textfield.TextInputLayout
-import com.stripe.android.model.Address
 import retrofit2.Call
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
@@ -23,7 +20,7 @@ class Entry : AppCompatActivity(), MovieAddApiResponseCallback, MovieUpdateApiRe
     // Stripe var
     companion object {
         private const val TAG = "CheckoutActivity"
-        private const val BACKEND_URL = "http://192.168.0.111:3000"
+        //private const val BACKEND_URL = "http://192.168.0.111:3000"
     }
     private lateinit var paymentIntentClientSecret: String
     private lateinit var paymentSheet: PaymentSheet
@@ -54,8 +51,8 @@ class Entry : AppCompatActivity(), MovieAddApiResponseCallback, MovieUpdateApiRe
         btnBuy.visibility = View.GONE
         btnBuy.setOnClickListener(::onPayClicked)
         btnBuy.isEnabled = false
-        pageTitle?.text = "Add New Movie"
-        btnUpdate?.text = "Save"
+        pageTitle?.text = getString(R.string.addnew)
+        btnUpdate?.text = getString(R.string.save)
 
 
         val intent = intent
@@ -63,8 +60,8 @@ class Entry : AppCompatActivity(), MovieAddApiResponseCallback, MovieUpdateApiRe
 
         if (movie != null) {
             // Supplied By Select
-            pageTitle?.text = "Edit Movie"
-            btnUpdate?.text = "Update"
+            pageTitle?.text = getString(R.string.edit)
+            btnUpdate?.text = getString(R.string.update)
             btnBuy.visibility = View.VISIBLE
 
             paymentSheet = PaymentSheet(this, ::onPaymentSheetResult)
@@ -137,35 +134,20 @@ class Entry : AppCompatActivity(), MovieAddApiResponseCallback, MovieUpdateApiRe
     }
 
     override fun onPFailure(call: Call<PaymentWrapper>, t: Throwable) {
-        showAlert("Failed to load page", "Error")
-    }
-
-    private fun showAlert(title: String, message: String? = null) {
-        runOnUiThread {
-            val builder = AlertDialog.Builder(this)
-                .setTitle(title)
-                .setMessage(message)
-            builder.setPositiveButton("Ok", null)
-            builder.create().show()
-        }
+        comLib.showAlert(this,"Failed to load page", "Error")
     }
 
     private fun onPaymentSheetResult(paymentResult: PaymentSheetResult) {
         when (paymentResult) {
             is PaymentSheetResult.Completed -> {
-                showToast("Payment complete!")
+                comLib.showAlert(this,"Payment Complete", "Paid!")
             }
             is PaymentSheetResult.Canceled -> {
                 Log.i(TAG, "Payment canceled!")
             }
             is PaymentSheetResult.Failed -> {
-                showAlert("Payment failed", paymentResult.error.localizedMessage)
+                comLib.showAlert(this,"Payment Failed", paymentResult.error.localizedMessage)
             }
-        }
-    }
-    private fun showToast(message: String) {
-        runOnUiThread {
-            Toast.makeText(this,  message, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -194,7 +176,7 @@ class Entry : AppCompatActivity(), MovieAddApiResponseCallback, MovieUpdateApiRe
 
     private fun writeMovie() {
 
-        val auth: String = comLib.SharePRead(applicationContext,"auth").toString()
+        val auth: String = comLib.sharePRead(applicationContext,"auth").toString()
 
         val textInputLayoutID: TextInputLayout = findViewById(R.id.mID)
         val editTextID = textInputLayoutID.editText
@@ -282,7 +264,7 @@ class Entry : AppCompatActivity(), MovieAddApiResponseCallback, MovieUpdateApiRe
     }
 
     override fun onUFailure(call: Call<MovieResponseWrapper>, t: Throwable) {
-        Log.d("mdev1004s23ice", "RB - Update Fail.", t)
+        Log.d("mdev1004s23A4", "RB - Update Fail.", t)
     }
 
     override fun onASuccess(response: MovieResponseWrapper) {
@@ -290,7 +272,7 @@ class Entry : AppCompatActivity(), MovieAddApiResponseCallback, MovieUpdateApiRe
     }
 
     override fun onAFailure(call: Call<MovieResponseWrapper>, t: Throwable) {
-        Log.d("mdev1004s23ice", "RB - Network Error.", t)
+        Log.d("mdev1004s23A4", "RB - Network Error.", t)
     }
 
 

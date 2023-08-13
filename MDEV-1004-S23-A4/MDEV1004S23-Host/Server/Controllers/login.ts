@@ -25,6 +25,7 @@ export function ProcessRegistration(
     username: req.body.username,
     emailAddress: req.body.EmailAddress,
     displayName: req.body.FirstName + " " + req.body.LastName,
+    password: req.body.password,
   });
 
   User.register(newUser, req.body.password, (err) => {
@@ -36,9 +37,9 @@ export function ProcessRegistration(
       });
     }
 
-    // automatically login the user
-    return passport.authenticate("local")(req, res, () => {
-      // return res.json({success: true, msg: 'User Logged in Successfully!', user: newUser});
+    return res.json({
+      success: true,
+      msg: "User Registered. - Now Log in.",
     });
   });
 }

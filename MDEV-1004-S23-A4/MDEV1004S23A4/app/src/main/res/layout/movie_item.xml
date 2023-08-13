@@ -4,7 +4,7 @@
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/ratingTextView"
@@ -38,11 +38,14 @@
 
     </LinearLayout>
 
-    <Button
+    <ImageButton
         android:id="@+id/btnDelMovie"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:gravity="end|center_vertical"
-        android:text="@string/delete" />
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/delete"
+        android:scaleType="fitXY"
+        android:src="@android:drawable/presence_busy" />
 
 </TableRow>

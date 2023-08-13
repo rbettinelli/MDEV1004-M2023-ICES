@@ -1,4 +1,4 @@
-package com.example.mdev1004s23ice7c
+package com.example.mdev1004s23A4
 
 import android.util.Log
 import com.squareup.moshi.Moshi
@@ -18,7 +18,9 @@ import retrofit2.http.Path
 
 class IOdbLogin(private val loginApiResponseCallback: LoginApiResponseCallback) {
 
-    private val myBaseURL: String = "http://192.168.0.111:3000"
+    // "http://192.168.0.111:3000"
+    // "https://ice-live.onrender.com"
+    private val myBaseURL: String = "https://ice-live.onrender.com"
 
     private val moshi = Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
@@ -32,7 +34,7 @@ class IOdbLogin(private val loginApiResponseCallback: LoginApiResponseCallback) 
     fun login(parameters: Map<String,String>) {
 
         val loginService: LoginService = retrofit.create(LoginService::class.java)
-        loginService.login(parameters).enqueue(object : Callback<LoginResponse> {
+        loginService.login(parameters).enqueue(object: Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
@@ -57,9 +59,53 @@ class IOdbLogin(private val loginApiResponseCallback: LoginApiResponseCallback) 
 
 }
 
+class IOdbRegister(private val registerApiResponseCallback: RegisterApiResponseCallback) {
+
+    // "http://192.168.0.111:3000"
+    // "https://ice-live.onrender.com"
+    private val myBaseURL: String = "https://ice-live.onrender.com"
+
+    private val moshi = Moshi.Builder()
+        .addLast(KotlinJsonAdapterFactory())
+        .build()
+
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(myBaseURL)
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .build()
+
+    fun register(parameters: Map<String,String>) {
+
+        val registerService: RegisterService = retrofit.create(RegisterService::class.java)
+        registerService.register(parameters).enqueue(object: Callback<RegisterResponse> {
+            override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
+                if (response.isSuccessful) {
+                    val registerResponse = response.body()
+                    if (registerResponse  != null) {
+                        // Notify the callback of successful login
+                        registerApiResponseCallback.onRSuccess(registerResponse)
+                    } else {
+                        Log.d("mdev1004s23ice", "RB - Call Error. " + response.code())
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    registerApiResponseCallback.onRFailure(call, Throwable(errorBody))
+                }
+            }
+
+            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                // Notify the callback of failure
+                registerApiResponseCallback.onRFailure(call, t)
+            }
+        })
+    }
+
+}
+
+
 class IOdbMovieList(private val movieListApiResponseCallback: MovieListApiResponseCallback) {
 
-    private val myBaseURL: String = "http://192.168.0.111:3000"
+    private val myBaseURL: String = "https://ice-live.onrender.com"
 
     private val moshi = Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
@@ -99,7 +145,7 @@ class IOdbMovieList(private val movieListApiResponseCallback: MovieListApiRespon
 
 class IOdbMovieAdd(private val movieAddApiResponseCallback: MovieAddApiResponseCallback) {
 
-    private val myBaseURL: String = "http://192.168.0.111:3000"
+    private val myBaseURL: String = "https://ice-live.onrender.com"
 
     private val moshi = Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
@@ -139,7 +185,7 @@ class IOdbMovieAdd(private val movieAddApiResponseCallback: MovieAddApiResponseC
 
 class IOdbMovieUpdate(private val movieUpdateApiResponseCallback: MovieUpdateApiResponseCallback) {
 
-    private val myBaseURL: String = "http://192.168.0.111:3000"
+    private val myBaseURL: String = "https://ice-live.onrender.com"
 
     private val moshi = Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
@@ -179,7 +225,7 @@ class IOdbMovieUpdate(private val movieUpdateApiResponseCallback: MovieUpdateApi
 
 class IOdbMovieDelete(private val movieDeleteApiResponseCallback: MovieDeleteApiResponseCallback) {
 
-    private val myBaseURL: String = "http://192.168.0.111:3000"
+    private val myBaseURL: String = "https://ice-live.onrender.com"
 
     private val moshi = Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
@@ -219,7 +265,7 @@ class IOdbMovieDelete(private val movieDeleteApiResponseCallback: MovieDeleteApi
 
 class IOdbMoviePayment(private val moviePaymentApiResponseCallback: MoviePaymentApiResponseCallback) {
 
-    private val myBaseURL: String = "http://192.168.0.111:3000"
+    private val myBaseURL: String = "https://ice-live.onrender.com"
 
     private val moshi = Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
@@ -266,6 +312,17 @@ interface LoginService {
 interface LoginApiResponseCallback {
     fun onSuccess(response: LoginResponse)
     fun onFailure(call: Call<LoginResponse>, t: Throwable)
+}
+
+// Register
+interface RegisterService {
+    @POST("/api/register")
+    fun register(@Body parameters: Map<String, String>): Call<RegisterResponse>
+}
+
+interface RegisterApiResponseCallback {
+    fun onRSuccess(response: RegisterResponse)
+    fun onRFailure(call: Call<RegisterResponse>, t: Throwable)
 }
 
 // Movie List

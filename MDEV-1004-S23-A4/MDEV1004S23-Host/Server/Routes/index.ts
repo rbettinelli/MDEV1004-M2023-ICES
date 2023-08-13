@@ -1,5 +1,5 @@
 // -------------------------------------------------------------
-// - Robert Bettinelli - MDEV1004 - S2023 - Assignment#1
+// - Robert Bettinelli - MDEV1004 - S2023
 // - 090003683@student.georgianc.on.ca
 // -------------------------------------------------------------
 // (Routes) index.ts - As Provided in Class Instruction

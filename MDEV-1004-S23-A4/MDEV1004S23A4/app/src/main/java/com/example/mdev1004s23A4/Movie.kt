@@ -1,5 +1,13 @@
-package com.example.mdev1004s23ice7c
+package com.example.mdev1004s23A4
 
+// -------------------------------------------------------------
+// - Robert Bettinelli - MDEV1004 - S2023
+// - 090003683@student.georgianc.on.ca
+// -------------------------------------------------------------
+// 08/23/2023 - RBettinelli - Header and Documentation Added
+// -------------------------------------------------------------
+// Contains Data Structures for JSON Calls.
+// -------------------------------------------------------------
 import java.io.Serializable
 
 data class Movie(

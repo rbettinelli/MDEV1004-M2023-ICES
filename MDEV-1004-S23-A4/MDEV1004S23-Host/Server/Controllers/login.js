@@ -13,6 +13,7 @@ function ProcessRegistration(req, res, next) {
         username: req.body.username,
         emailAddress: req.body.EmailAddress,
         displayName: req.body.FirstName + " " + req.body.LastName,
+        password: req.body.password,
     });
     user_1.default.register(newUser, req.body.password, (err) => {
         if (err instanceof mongoose_1.default.Error.ValidationError) {
@@ -22,7 +23,9 @@ function ProcessRegistration(req, res, next) {
                 msg: "ERROR: User Registration error. All Fields Req'd.",
             });
         }
-        return passport_1.default.authenticate("local")(req, res, () => {
+        return res.json({
+            success: true,
+            msg: "User Registered. - Now Log in.",
         });
     });
 }

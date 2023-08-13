@@ -1,7 +1,7 @@
 {
-  "name": "mdev-1004-s23-ice10",
-  "version": "0.0.10",
-  "description": "This is a demo project for MDEV1004 Summer Sem GC - ICE10",
+  "name": "mdev-1004-s23-A4",
+  "version": "0.4.0",
+  "description": "This is a demo project for MDEV1004 Summer Sem GC - A4",
   "author": "rbettinelli",
   "main": "server.js",
   "license": "MIT",
