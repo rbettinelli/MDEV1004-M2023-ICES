@@ -3,4 +3,54 @@
    uuid = "F15F52A1-0CA3-4168-A342-EAFB6952177B"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EFFAE45E-05D0-4CBE-818E-033A626BA741"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MDEV1004-S23-ICE10B/Base.lproj/AddEditCRUDViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
+            landmarkName = "fetchPaymentIntent()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "EFFAE45E-05D0-4CBE-818E-033A626BA741 - adcbe2454f0d5c5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in MDEV1004_S23_ICE8.AddEditAPICRUDViewController.fetchPaymentIntent() -&gt; ()"
+                  moduleName = "MDEV1004-S23-ICE8"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rtron1/DEV/MDEV1004-S23/MDEV-1004-S23-ICE10B/MDEV1004-S23-ICE10B/Base.lproj/AddEditCRUDViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "79"
+                  endingLineNumber = "79"
+                  offsetFromSymbolStart = "1564">
+               </Location>
+               <Location
+                  uuid = "EFFAE45E-05D0-4CBE-818E-033A626BA741 - adcbe2454f0d5c5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in MDEV1004_S23_ICE8.AddEditAPICRUDViewController.fetchPaymentIntent() -&gt; ()"
+                  moduleName = "MDEV1004-S23-ICE8"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rtron1/DEV/MDEV1004-S23/MDEV-1004-S23-ICE10B/MDEV1004-S23-ICE10B/Base.lproj/AddEditCRUDViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "79"
+                  endingLineNumber = "79"
+                  offsetFromSymbolStart = "1628">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

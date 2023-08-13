@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MDEV1004S23ICE</string>
+    <string name="enter_email">Email</string>
+    <string name="enter_password">Password</string>
+    <string name="enter_username">Username</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="delete">Delete</string>
+</resources>
