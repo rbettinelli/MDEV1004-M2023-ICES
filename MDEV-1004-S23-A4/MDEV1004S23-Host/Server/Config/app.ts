@@ -1,5 +1,5 @@
 // -------------------------------------------------------------
-// - Robert Bettinelli - MDEV1004 - S2023 - Assignment#1
+// - Robert Bettinelli - MDEV1004 - S2023
 // - 090003683@student.georgianc.on.ca
 // -------------------------------------------------------------
 // (Config) app.ts - As Provided in Class Instruction
@@ -97,7 +97,7 @@ let strategy = new JWTStrategy(jwtOptions, function (jwt_payload, done) {
 });
 
 passport.use(strategy);
-
+// Default Base Route
 app.use("/api/", indexRouter);
 
 export default app;

@@ -12,14 +12,14 @@ const UserSchema = new Schema({
     displayName: { type: String, required: true },
     created: {
         type: Date,
-        default: Date.now()
+        default: Date.now(),
     },
     updated: {
         type: Date,
-        default: Date.now()
-    }
+        default: Date.now(),
+    },
 }, {
-    collection: 'users'
+    collection: "users",
 });
 UserSchema.plugin(passport_local_mongoose_1.default);
 const Model = mongoose_1.default.model("User", UserSchema);

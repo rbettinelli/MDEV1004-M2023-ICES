@@ -11,10 +11,10 @@ function GenerateToken(user) {
         id: user._id,
         DisplayName: user.displayName,
         username: user.username,
-        EmailAddress: user.emailAddress
+        EmailAddress: user.emailAddress,
     };
     const jwtOptions = {
-        expiresIn: 604800
+        expiresIn: 604800,
     };
     return jsonwebtoken_1.default.sign(payload, db_1.default.secret, jwtOptions);
 }

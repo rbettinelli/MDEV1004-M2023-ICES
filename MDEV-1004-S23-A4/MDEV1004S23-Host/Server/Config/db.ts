@@ -1,5 +1,5 @@
 // -------------------------------------------------------------
-// - Robert Bettinelli - MDEV1004 - S2023 - Assignment#1
+// - Robert Bettinelli - MDEV1004 - S2023
 // - 090003683@student.georgianc.on.ca
 // -------------------------------------------------------------
 // (Config) db.ts - As Provided in Class Instruction
@@ -9,12 +9,13 @@
 // -------------------------------------------------------------
 
 // Connection Setup for MongoDB Locations.
-let localURI = 'mongodb://localhost:27017/movies';
-let remoteURI = 'mongodb+srv://robertbettinelli:k9P5Zy44TKJZsGls@cluster0.z16ahlj.mongodb.net/movies';
+let localURI = "mongodb://localhost:27017/movies";
+let remoteURI =
+  "mongodb+srv://robertbettinelli:k9P5Zy44TKJZsGls@cluster0.z16ahlj.mongodb.net/movies";
 let secret = "#mySecret2023!";
 
 export default {
-    localURI: localURI,
-    remoteURI: remoteURI,
-    secret: secret
-}
+  localURI: localURI,
+  remoteURI: remoteURI,
+  secret: secret,
+};
