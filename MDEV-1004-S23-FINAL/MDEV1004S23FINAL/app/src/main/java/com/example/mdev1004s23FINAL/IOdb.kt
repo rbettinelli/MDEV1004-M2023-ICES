@@ -1,4 +1,4 @@
-package com.example.mdev1004s23A4
+package com.example.mdev1004s23FINAL
 
 import android.util.Log
 import com.squareup.moshi.Moshi
@@ -19,8 +19,8 @@ import retrofit2.http.Path
 class IOdbLogin(private val loginApiResponseCallback: LoginApiResponseCallback) {
 
     // "http://192.168.0.111:3000"
-    // "https://ice-live.onrender.com"
-    private val myBaseURL: String = "https://ice-live.onrender.com"
+    // "https://mdev1004s23rbfinal.onrender.com"
+    private val myBaseURL: String = "https://mdev1004s23rbfinal.onrender.com"
 
     private val moshi = Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
@@ -62,8 +62,8 @@ class IOdbLogin(private val loginApiResponseCallback: LoginApiResponseCallback) 
 class IOdbRegister(private val registerApiResponseCallback: RegisterApiResponseCallback) {
 
     // "http://192.168.0.111:3000"
-    // "https://ice-live.onrender.com"
-    private val myBaseURL: String = "https://ice-live.onrender.com"
+    // "https://mdev1004s23rbfinal.onrender.com"
+    private val myBaseURL: String = "https://mdev1004s23rbfinal.onrender.com"
 
     private val moshi = Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
@@ -102,10 +102,9 @@ class IOdbRegister(private val registerApiResponseCallback: RegisterApiResponseC
 
 }
 
+class IOdbItemList(private val itemListApiResponseCallback: ItemListApiResponseCallback) {
 
-class IOdbMovieList(private val movieListApiResponseCallback: MovieListApiResponseCallback) {
-
-    private val myBaseURL: String = "https://ice-live.onrender.com"
+    private val myBaseURL: String = "https://mdev1004s23rbfinal.onrender.com"
 
     private val moshi = Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
@@ -116,36 +115,36 @@ class IOdbMovieList(private val movieListApiResponseCallback: MovieListApiRespon
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 
-    fun getMovieList( bearerAndAuth: String) {
+    fun getItemList( bearerAndAuth: String) {
 
-        val movieService = retrofit.create(MovieService::class.java)
-        val call = movieService.getMovies(bearerAndAuth)
-        call.enqueue(object : Callback<MovieResponse> {
-            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
+        val itemService = retrofit.create(ItemService::class.java)
+        val call = itemService.getItems(bearerAndAuth)
+        call.enqueue(object : Callback<ItemResponse> {
+            override fun onResponse(call: Call<ItemResponse>, response: Response<ItemResponse>) {
                 if (response.isSuccessful) {
-                    val movieResponse = response.body()
-                    if (movieResponse  != null) {
-                        movieListApiResponseCallback.onSuccess(movieResponse)
+                    val itemResponse = response.body()
+                    if (itemResponse  != null) {
+                        itemListApiResponseCallback.onSuccess(itemResponse)
                     }else {
-                        Log.d("mdev1004s23ice", "RB - Empty. " + response.code())
+                        Log.d("mdev1004s23", "RB - Empty. " + response.code())
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    movieListApiResponseCallback.onFailure(call, Throwable(errorBody))
+                    itemListApiResponseCallback.onFailure(call, Throwable(errorBody))
                 }
             }
-            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ItemResponse>, t: Throwable) {
                 // Notify the callback of failure
-                movieListApiResponseCallback.onFailure(call, t)
+                itemListApiResponseCallback.onFailure(call, t)
             }
         })
     }
 
 }
 
-class IOdbMovieAdd(private val movieAddApiResponseCallback: MovieAddApiResponseCallback) {
+class IOdbItemAdd(private val itemAddApiResponseCallback: ItemAddApiResponseCallback) {
 
-    private val myBaseURL: String = "https://ice-live.onrender.com"
+    private val myBaseURL: String = "https://mdev1004s23rbfinal.onrender.com"
 
     private val moshi = Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
@@ -156,36 +155,36 @@ class IOdbMovieAdd(private val movieAddApiResponseCallback: MovieAddApiResponseC
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 
-    fun addMovie(bearerAndAuth: String,parameters: Map<String,String>) {
+    fun addItem(bearerAndAuth: String,parameters: Map<String,String>) {
 
-        val movieAddService = retrofit.create(MovieAddService::class.java)
-        val call = movieAddService.addMovie(bearerAndAuth, parameters)
-        call.enqueue(object : Callback<MovieResponseWrapper> {
-            override fun onResponse(call: Call<MovieResponseWrapper>, response: Response<MovieResponseWrapper>) {
+        val itemAddService = retrofit.create(ItemAddService::class.java)
+        val call = itemAddService.addItem(bearerAndAuth, parameters)
+        call.enqueue(object : Callback<ItemResponseWrapper> {
+            override fun onResponse(call: Call<ItemResponseWrapper>, response: Response<ItemResponseWrapper>) {
                 if (response.isSuccessful) {
-                    val movieResponse = response.body()
-                    if (movieResponse  != null) {
-                        movieAddApiResponseCallback.onASuccess(movieResponse)
+                    val itemResponse = response.body()
+                    if (itemResponse  != null) {
+                        itemAddApiResponseCallback.onASuccess(itemResponse)
                     }else {
                         Log.d("mdev1004s23ice", "RB - Empty. " + response.code())
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    movieAddApiResponseCallback.onAFailure(call, Throwable(errorBody))
+                    itemAddApiResponseCallback.onAFailure(call, Throwable(errorBody))
                 }
             }
-            override fun onFailure(call: Call<MovieResponseWrapper>, t: Throwable) {
+            override fun onFailure(call: Call<ItemResponseWrapper>, t: Throwable) {
                 // Notify the callback of failure
-                movieAddApiResponseCallback.onAFailure(call, t)
+                itemAddApiResponseCallback.onAFailure(call, t)
             }
         })
     }
 
 }
 
-class IOdbMovieUpdate(private val movieUpdateApiResponseCallback: MovieUpdateApiResponseCallback) {
+class IOdbItemUpdate(private val itemUpdateApiResponseCallback: ItemUpdateApiResponseCallback) {
 
-    private val myBaseURL: String = "https://ice-live.onrender.com"
+    private val myBaseURL: String = "https://mdev1004s23rbfinal.onrender.com"
 
     private val moshi = Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
@@ -196,76 +195,36 @@ class IOdbMovieUpdate(private val movieUpdateApiResponseCallback: MovieUpdateApi
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 
-    fun updateMovie(bearerAndAuth: String, id: String, parameters: Map<String,String>) {
+    fun updateItem(bearerAndAuth: String, id: String, parameters: Map<String,String>) {
 
-        val movieUpdateService = retrofit.create(MovieUpdateService::class.java)
-        val call = movieUpdateService.updateMovie(id, bearerAndAuth, parameters)
-        call.enqueue(object : Callback<MovieResponseWrapper> {
-            override fun onResponse(call: Call<MovieResponseWrapper>, response: Response<MovieResponseWrapper>) {
+        val itemUpdateService = retrofit.create(ItemUpdateService::class.java)
+        val call = itemUpdateService.updateItem(id, bearerAndAuth, parameters)
+        call.enqueue(object : Callback<ItemResponseWrapper> {
+            override fun onResponse(call: Call<ItemResponseWrapper>, response: Response<ItemResponseWrapper>) {
                 if (response.isSuccessful) {
-                    val movieResponse = response.body()
-                    if (movieResponse  != null) {
-                        movieUpdateApiResponseCallback.onUSuccess(movieResponse)
+                    val itemResponse = response.body()
+                    if (itemResponse  != null) {
+                        itemUpdateApiResponseCallback.onUSuccess(itemResponse)
                     }else {
                         Log.d("mdev1004s23ice", "RB - Empty. " + response.code())
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    movieUpdateApiResponseCallback.onUFailure(call, Throwable(errorBody))
+                    itemUpdateApiResponseCallback.onUFailure(call, Throwable(errorBody))
                 }
             }
-            override fun onFailure(call: Call<MovieResponseWrapper>, t: Throwable) {
+            override fun onFailure(call: Call<ItemResponseWrapper>, t: Throwable) {
                 // Notify the callback of failure
-                movieUpdateApiResponseCallback.onUFailure(call, t)
+                itemUpdateApiResponseCallback.onUFailure(call, t)
             }
         })
     }
 
 }
 
-class IOdbMovieDelete(private val movieDeleteApiResponseCallback: MovieDeleteApiResponseCallback) {
+class IOdbItemDelete(private val itemDeleteApiResponseCallback: ItemDeleteApiResponseCallback) {
 
-    private val myBaseURL: String = "https://ice-live.onrender.com"
-
-    private val moshi = Moshi.Builder()
-        .addLast(KotlinJsonAdapterFactory())
-        .build()
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(myBaseURL)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .build()
-
-    fun deleteMovie(bearerAndAuth: String, id: String) {
-
-        val movieDeleteService = retrofit.create(MovieDeleteService::class.java)
-        val call = movieDeleteService.deleteMovies(id, bearerAndAuth)
-        call.enqueue(object : Callback<MovieDeleteWrapper> {
-            override fun onResponse(call: Call<MovieDeleteWrapper>, response: Response<MovieDeleteWrapper>) {
-                if (response.isSuccessful) {
-                    val movieResponse = response.body()
-                    if (movieResponse  != null) {
-                        movieDeleteApiResponseCallback.onDSuccess(movieResponse)
-                    }else {
-                        Log.d("mdev1004s23ice", "RB - Empty. " + response.code())
-                    }
-                } else {
-                    val errorBody = response.errorBody()?.string()
-                    movieDeleteApiResponseCallback.onDFailure(call, Throwable(errorBody))
-                }
-            }
-            override fun onFailure(call: Call<MovieDeleteWrapper>, t: Throwable) {
-                // Notify the callback of failure
-                movieDeleteApiResponseCallback.onDFailure(call, t)
-            }
-        })
-    }
-
-}
-
-class IOdbMoviePayment(private val moviePaymentApiResponseCallback: MoviePaymentApiResponseCallback) {
-
-    private val myBaseURL: String = "https://ice-live.onrender.com"
+    private val myBaseURL: String = "https://mdev1004s23rbfinal.onrender.com"
 
     private val moshi = Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
@@ -276,27 +235,27 @@ class IOdbMoviePayment(private val moviePaymentApiResponseCallback: MoviePayment
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 
-    fun paymentMovie() {
+    fun deleteItem(bearerAndAuth: String, id: String) {
 
-        val moviePaymentService = retrofit.create(MoviePaymentService::class.java)
-        val call = moviePaymentService.payMovie()
-        call.enqueue(object : Callback<PaymentWrapper> {
-            override fun onResponse(call: Call<PaymentWrapper>, response: Response<PaymentWrapper>) {
+        val itemDeleteService = retrofit.create(ItemDeleteService::class.java)
+        val call = itemDeleteService.deleteItems(id, bearerAndAuth)
+        call.enqueue(object : Callback<ItemDeleteWrapper> {
+            override fun onResponse(call: Call<ItemDeleteWrapper>, response: Response<ItemDeleteWrapper>) {
                 if (response.isSuccessful) {
-                    val movieResponse = response.body()
-                    if (movieResponse  != null) {
-                        moviePaymentApiResponseCallback.onPSuccess(movieResponse)
+                    val itemResponse = response.body()
+                    if (itemResponse  != null) {
+                        itemDeleteApiResponseCallback.onDSuccess(itemResponse)
                     }else {
                         Log.d("mdev1004s23ice", "RB - Empty. " + response.code())
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    moviePaymentApiResponseCallback.onPFailure(call, Throwable(errorBody))
+                    itemDeleteApiResponseCallback.onDFailure(call, Throwable(errorBody))
                 }
             }
-            override fun onFailure(call: Call<PaymentWrapper>, t: Throwable) {
+            override fun onFailure(call: Call<ItemDeleteWrapper>, t: Throwable) {
                 // Notify the callback of failure
-                moviePaymentApiResponseCallback.onPFailure(call, t)
+                itemDeleteApiResponseCallback.onDFailure(call, t)
             }
         })
     }
@@ -325,69 +284,57 @@ interface RegisterApiResponseCallback {
     fun onRFailure(call: Call<RegisterResponse>, t: Throwable)
 }
 
-// Movie List
-interface MovieService {
+// Item List
+interface ItemService {
     @GET("/api/list")
-    fun getMovies(@Header("Authorization") authToken: String): Call<MovieResponse>
+    fun getItems(@Header("Authorization") authToken: String): Call<ItemResponse>
 }
 
-interface MovieListApiResponseCallback {
-    fun onSuccess(response: MovieResponse)
-    fun onFailure(call: Call<MovieResponse>, t: Throwable)
+interface ItemListApiResponseCallback {
+    fun onSuccess(response: ItemResponse)
+    fun onFailure(call: Call<ItemResponse>, t: Throwable)
 }
 
-//Movie Update
-interface MovieUpdateService {
+//Item Update
+interface ItemUpdateService {
     @PUT("/api/update/{id}")
-    fun updateMovie(
+    fun updateItem(
         @Path("id") id: String,
         @Header("Authorization") authToken: String,
         @Body parameters: Map<String, String>
-    ): Call<MovieResponseWrapper>
+    ): Call<ItemResponseWrapper>
 }
 
-interface MovieUpdateApiResponseCallback {
-    fun onUSuccess(response: MovieResponseWrapper)
-    fun onUFailure(call: Call<MovieResponseWrapper>, t: Throwable)
+interface ItemUpdateApiResponseCallback {
+    fun onUSuccess(response: ItemResponseWrapper)
+    fun onUFailure(call: Call<ItemResponseWrapper>, t: Throwable)
 }
 
-//Movie Payment
-interface MoviePaymentService {
-    @POST("/api/payment")
-    fun payMovie(): Call<PaymentWrapper>
-}
-
-interface MoviePaymentApiResponseCallback {
-    fun onPSuccess(response: PaymentWrapper)
-    fun onPFailure(call: Call<PaymentWrapper>, t: Throwable)
-}
-
-
-//Movie Add
-interface MovieAddService {
+//Item Add
+interface ItemAddService {
     @POST("/api/add")
-    fun addMovie(
+    fun addItem(
         @Header("Authorization") authToken: String,
         @Body parameters: Map<String, String>
-    ): Call<MovieResponseWrapper>
+    ): Call<ItemResponseWrapper>
 }
 
-interface MovieAddApiResponseCallback {
-    fun onASuccess(response: MovieResponseWrapper)
-    fun onAFailure(call: Call<MovieResponseWrapper>, t: Throwable)
+interface ItemAddApiResponseCallback {
+    fun onASuccess(response: ItemResponseWrapper)
+    fun onAFailure(call: Call<ItemResponseWrapper>, t: Throwable)
 }
 
-//Movie Delete
-interface MovieDeleteService {
+//Item Delete
+interface ItemDeleteService {
     @DELETE("/api/delete/{id}")
-    fun deleteMovies(
+    fun deleteItems(
         @Path("id") id: String,
         @Header("Authorization") authToken: String
-    ): Call<MovieDeleteWrapper>
+    ): Call<ItemDeleteWrapper>
 }
 
-interface MovieDeleteApiResponseCallback {
-    fun onDSuccess(response: MovieDeleteWrapper)
-    fun onDFailure(call: Call<MovieDeleteWrapper>, t: Throwable)
+interface ItemDeleteApiResponseCallback {
+    fun onDSuccess(response: ItemDeleteWrapper)
+    fun onDFailure(call: Call<ItemDeleteWrapper>, t: Throwable)
 }
 

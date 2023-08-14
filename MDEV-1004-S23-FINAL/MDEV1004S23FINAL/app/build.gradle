@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.mdev1004s23A4'
+    namespace 'com.example.mdev1004s23FINAL'
     compileSdk 34
 
     defaultConfig {
-        applicationId 'com.example.mdev1004s23A4'
+        applicationId 'com.example.mdev1004s23FINAL'
         minSdk 33
         targetSdk 33
         versionCode 1
@@ -80,7 +80,5 @@ dependencies {
 // RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.3.1'
 
-// STRIPE
-    implementation 'com.stripe:stripe-android:20.28.1'
 
 }

@@ -1,13 +1,15 @@
 <resources>
-    <string name="app_name">MDEV1004S23A4</string>
+    <string name="app_name">MDEV1004s23FINAL</string>
     <string name="enter_email">Email</string>
     <string name="enter_password">Password</string>
     <string name="enter_username">Username</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="delete">Delete</string>
-    <string name="addnew">Add New Movie</string>
+    <string name="addnew">Add New Item</string>
     <string name="save">Save</string>
-    <string name="edit">Edit Movie</string>
+    <string name="edit">Edit Item</string>
     <string name="update">Update</string>
+    <string name="start">Start</string>
+    <string name="appTitle">Building DataBase</string>
 </resources>

@@ -1,41 +1,27 @@
-package com.example.mdev1004s23A4
+package com.example.mdev1004s23FINAL
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputLayout
 import retrofit2.Call
-import com.stripe.android.paymentsheet.PaymentSheet
-import com.stripe.android.paymentsheet.PaymentSheetResult
-
 
 @Suppress("DEPRECATION")
-class Entry : AppCompatActivity(), MovieAddApiResponseCallback, MovieUpdateApiResponseCallback, MoviePaymentApiResponseCallback {
+class Entry : AppCompatActivity(), ItemAddApiResponseCallback, ItemUpdateApiResponseCallback {
 
-    // Stripe var
-    companion object {
-        private const val TAG = "CheckoutActivity"
-        //private const val BACKEND_URL = "http://192.168.0.111:3000"
-    }
-    private lateinit var paymentIntentClientSecret: String
-    private lateinit var paymentSheet: PaymentSheet
 
     private val comLib = LibCom()
-    private val iodbAdd = IOdbMovieAdd(this)
-    private val iodbUpdate = IOdbMovieUpdate(this)
-    private val iodbPay = IOdbMoviePayment(this)
+    private val iodbAdd = IOdbItemAdd(this)
+    private val iodbUpdate = IOdbItemUpdate(this)
     private var btnCan: Button? = null
     private var btnUpdate: Button? = null
-    private lateinit var btnBuy: Button
     private var dirty: Boolean = false
     private var pageTitle: TextView? = null
-    private var movieUUID: String = ""
-
+    private var itemUUID: String = ""
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,235 +31,152 @@ class Entry : AppCompatActivity(), MovieAddApiResponseCallback, MovieUpdateApiRe
         btnCan = findViewById(R.id.btnMcan)
         btnCan?.setOnClickListener { _ -> back() }
         btnUpdate = findViewById(R.id.btnMupdate)
-        btnUpdate?.setOnClickListener { _ -> writeMovie() }
+        btnUpdate?.setOnClickListener { _ -> writeItem() }
         pageTitle = findViewById(R.id.txtTitle)
-        btnBuy = findViewById(R.id.btnMBuy)
-        btnBuy.visibility = View.GONE
-        btnBuy.setOnClickListener(::onPayClicked)
-        btnBuy.isEnabled = false
         pageTitle?.text = getString(R.string.addnew)
         btnUpdate?.text = getString(R.string.save)
 
-
         val intent = intent
-        val movie = intent.getSerializableExtra("movie") as? Movie
+        val item = intent.getSerializableExtra("item") as? MyItem
 
-        if (movie != null) {
+        if (item != null) {
             // Supplied By Select
             pageTitle?.text = getString(R.string.edit)
             btnUpdate?.text = getString(R.string.update)
-            btnBuy.visibility = View.VISIBLE
 
-            paymentSheet = PaymentSheet(this, ::onPaymentSheetResult)
-
-            val textInputLayoutID: TextInputLayout = findViewById(R.id.mID)
-            val editTextID = textInputLayoutID.editText
-            editTextID?.setText(movie.movieID.toString())
+            val textInputLayoutID: TextInputLayout = findViewById(R.id.mName)
+            val editTextName = textInputLayoutID.editText
+            editTextName?.setText(item.name)
             
-            val textInputLayoutTitle: TextInputLayout = findViewById(R.id.mTitle)
-            val editTextTitle = textInputLayoutTitle.editText
-            editTextTitle?.setText(movie.title)
+            val textInputLayoutType: TextInputLayout = findViewById(R.id.mType)
+            val editTextType = textInputLayoutType.editText
+            editTextType?.setText(item.type)
 
-            val textInputLayoutStudio: TextInputLayout = findViewById(R.id.mStudio)
-            val editTextStudio = textInputLayoutStudio.editText
-            editTextStudio?.setText(movie.studio)
+            val textInputLayoutDateBuilt: TextInputLayout = findViewById(R.id.mDateBuilt)
+            val editTextDateBuilt = textInputLayoutDateBuilt.editText
+            editTextDateBuilt?.setText(item.dateBuilt)
 
-            val textInputLayoutGenres: TextInputLayout = findViewById(R.id.mGenres)
-            val editTextGenres = textInputLayoutGenres.editText
-            editTextGenres?.setText(movie.genres.joinToString(", "))
+            val textInputLayoutCity: TextInputLayout = findViewById(R.id.mCity)
+            val editTextCity = textInputLayoutCity.editText
+            editTextCity?.setText(item.city)
 
-            val textInputLayoutDirectors: TextInputLayout = findViewById(R.id.mDirectors)
-            val editTextDirectors = textInputLayoutDirectors.editText
-            editTextDirectors?.setText(movie.directors.joinToString(", "))
+            val textInputLayoutCountry: TextInputLayout = findViewById(R.id.mCountry)
+            val editTextCountry = textInputLayoutCountry.editText
+            editTextCountry?.setText(item.country)
 
-            val textInputLayoutWriters: TextInputLayout = findViewById(R.id.mWriters)
-            val editTextWriters = textInputLayoutWriters.editText
-            editTextWriters?.setText(movie.writers.joinToString(", "))
-
-            val textInputLayoutActors: TextInputLayout = findViewById(R.id.mActors)
-            val editTextActors = textInputLayoutActors.editText
-            editTextActors?.setText(movie.actors.joinToString(", "))
-
-            val textInputLayoutLength: TextInputLayout = findViewById(R.id.mLength)
-            val editTextLength = textInputLayoutLength.editText
-            editTextLength?.setText(movie.length)
-
-            val textInputLayoutYear: TextInputLayout = findViewById(R.id.mYear)
-            val editTextYear = textInputLayoutYear.editText
-            editTextYear?.setText(movie.year.toString())
-
-            val textInputLayoutDesc: TextInputLayout = findViewById(R.id.mDescription)
+            val textInputLayoutDesc: TextInputLayout = findViewById(R.id.mDesc)
             val editTextDesc = textInputLayoutDesc.editText
-            editTextDesc?.setText(movie.shortDescription)
+            editTextDesc?.setText(item.description)
 
-            val textInputLayoutPosterLink: TextInputLayout = findViewById(R.id.mPosterLink)
-            val editTextPosterLink = textInputLayoutPosterLink.editText
-            editTextPosterLink?.setText(movie.posterLink)
+            val textInputLayoutArchitects: TextInputLayout = findViewById(R.id.mArchitects)
+            val editTextArchitects = textInputLayoutArchitects.editText
+            editTextArchitects?.setText(item.architects.joinToString(", "))
 
-            val textInputLayoutMpa: TextInputLayout = findViewById(R.id.mMpaRating)
-            val editTextMpa = textInputLayoutMpa.editText
-            editTextMpa?.setText(movie.mpaRating)
+            val textInputLayoutCost: TextInputLayout = findViewById(R.id.mCost)
+            val editTextCost = textInputLayoutCost.editText
+            editTextCost?.setText(item.cost)
 
-            val textInputLayoutCriticRating: TextInputLayout = findViewById(R.id.mCriticsRating)
-            val editTextCriticRating = textInputLayoutCriticRating.editText
-            editTextCriticRating?.setText(movie.criticsRating.toString())
-            movieUUID = movie._id
+            val textInputLayoutWebsite: TextInputLayout = findViewById(R.id.mWebsite)
+            val editTextWebsite = textInputLayoutWebsite.editText
+            editTextWebsite?.setText(item.website)
+
+            val textInputLayoutImageURL: TextInputLayout = findViewById(R.id.mImageURL)
+            val editTextImageURL = textInputLayoutImageURL.editText
+            editTextImageURL?.setText(item.imageURL)
+
+            itemUUID = item._id
             dirty = true
-            fetchPaymentIntent()
         }
-    }
-
-    private fun fetchPaymentIntent() {
-        iodbPay.paymentMovie()
-    }
-
-    override fun onPSuccess(response: PaymentWrapper) {
-        paymentIntentClientSecret = response.clientSecret
-        runOnUiThread { btnBuy.isEnabled = true }
-        Log.i(TAG, "Retrieved PaymentIntent")
-    }
-
-    override fun onPFailure(call: Call<PaymentWrapper>, t: Throwable) {
-        comLib.showAlert(this,"Failed to load page", "Error")
-    }
-
-    private fun onPaymentSheetResult(paymentResult: PaymentSheetResult) {
-        when (paymentResult) {
-            is PaymentSheetResult.Completed -> {
-                comLib.showAlert(this,"Payment Complete", "Paid!")
-            }
-            is PaymentSheetResult.Canceled -> {
-                Log.i(TAG, "Payment canceled!")
-            }
-            is PaymentSheetResult.Failed -> {
-                comLib.showAlert(this,"Payment Failed", paymentResult.error.localizedMessage)
-            }
-        }
-    }
-
-    // Test Card : 4242 4242 4242 4242  - 12/34
-    private fun onPayClicked(view: View) {
-
-        val myAddress = PaymentSheet.Address.Builder()
-            .country("CA")
-            .build()
-
-        val billingDetails = PaymentSheet.BillingDetails.Builder()
-            .address(myAddress)
-            .build()
-
-        val configuration = PaymentSheet.Configuration.Builder("io-serv")
-            .defaultBillingDetails(billingDetails)
-            .allowsDelayedPaymentMethods(true)
-            .build()
-
-        paymentSheet.presentWithPaymentIntent(paymentIntentClientSecret, configuration)
     }
 
     private fun back() {
         finish()
     }
 
-    private fun writeMovie() {
+    private fun writeItem() {
 
         val auth: String = comLib.sharePRead(applicationContext,"auth").toString()
 
-        val textInputLayoutID: TextInputLayout = findViewById(R.id.mID)
-        val editTextID = textInputLayoutID.editText
+        val textInputLayoutName: TextInputLayout = findViewById(R.id.mName)
+        val editTextName = textInputLayoutName.editText
 
-        val textInputLayoutTitle: TextInputLayout = findViewById(R.id.mTitle)
-        val editTextTitle = textInputLayoutTitle.editText
+        val textInputLayoutType: TextInputLayout = findViewById(R.id.mType)
+        val editTextType = textInputLayoutType.editText
 
-        val textInputLayoutStudio: TextInputLayout = findViewById(R.id.mStudio)
-        val editTextStudio = textInputLayoutStudio.editText
+        val textInputLayoutDateBuilt: TextInputLayout = findViewById(R.id.mDateBuilt)
+        val editTextDateBuilt = textInputLayoutDateBuilt.editText
 
-        val textInputLayoutGenres: TextInputLayout = findViewById(R.id.mGenres)
-        val editTextGenres = textInputLayoutGenres.editText
+        val textInputLayoutCity: TextInputLayout = findViewById(R.id.mCity)
+        val editTextCity = textInputLayoutCity.editText
 
-        val textInputLayoutDirectors: TextInputLayout = findViewById(R.id.mDirectors)
-        val editTextDirectors = textInputLayoutDirectors.editText
+        val textInputLayoutCountry: TextInputLayout = findViewById(R.id.mCountry)
+        val editTextCountry = textInputLayoutCountry.editText
 
-        val textInputLayoutWriters: TextInputLayout = findViewById(R.id.mWriters)
-        val editTextWriters = textInputLayoutWriters.editText
-
-        val textInputLayoutActors: TextInputLayout = findViewById(R.id.mActors)
-        val editTextActors = textInputLayoutActors.editText
-
-        val textInputLayoutLength: TextInputLayout = findViewById(R.id.mLength)
-        val editTextLength = textInputLayoutLength.editText
-
-        val textInputLayoutYear: TextInputLayout = findViewById(R.id.mYear)
-        val editTextYear = textInputLayoutYear.editText
-
-        val textInputLayoutDesc: TextInputLayout = findViewById(R.id.mDescription)
+        val textInputLayoutDesc: TextInputLayout = findViewById(R.id.mDesc)
         val editTextDesc = textInputLayoutDesc.editText
 
-        val textInputLayoutPosterLink: TextInputLayout = findViewById(R.id.mPosterLink)
-        val editTextPosterLink = textInputLayoutPosterLink.editText
+        val textInputLayoutArchitects: TextInputLayout = findViewById(R.id.mArchitects)
+        val editTextArchitects = textInputLayoutArchitects.editText
 
-        val textInputLayoutMpa: TextInputLayout = findViewById(R.id.mMpaRating)
-        val editTextMpa = textInputLayoutMpa.editText
+        val textInputLayoutCost: TextInputLayout = findViewById(R.id.mCost)
+        val editTextCost = textInputLayoutCost.editText
 
-        val textInputLayoutCriticRating: TextInputLayout = findViewById(R.id.mCriticsRating)
-        val editTextCriticRating = textInputLayoutCriticRating.editText
+        val textInputLayoutWebsite: TextInputLayout = findViewById(R.id.mWebsite)
+        val editTextWebsite = textInputLayoutWebsite.editText
 
-        val movieID: String = editTextID?.text?.toString()?: ""
-        val title: String = editTextTitle?.text?.toString() ?: ""
-        val studio: String =  editTextStudio?.text?.toString() ?: ""
-        val genres: String =  editTextGenres?.text?.toString() ?: ""
-        val directors: String =  editTextDirectors?.text?.toString() ?: ""
-        val writers: String =  editTextWriters?.text?.toString() ?: ""
-        val actors: String =  editTextActors?.text?.toString() ?: ""
-        val year: String =  editTextYear?.text?.toString()?:""
-        val length: String =  editTextLength?.text?.toString() ?: ""
-        val shortDescription: String =  editTextDesc?.text?.toString() ?: ""
-        val mpaRating: String =  editTextMpa?.text?.toString() ?: ""
-        val criticsRating: String =  editTextCriticRating?.text?.toString()?: ""
-        val posterLink: String =  editTextPosterLink?.text?.toString() ?: ""
+        val textInputLayoutImageURL: TextInputLayout = findViewById(R.id.mImageURL)
+        val editTextImageURL = textInputLayoutImageURL.editText
+
+        val name: String = editTextName?.text?.toString()?: ""
+        val type: String = editTextType?.text?.toString() ?: ""
+        val dateBuilt: String =  editTextDateBuilt?.text?.toString() ?: ""
+        val city: String =  editTextCity?.text?.toString() ?: ""
+        val country: String =  editTextCountry?.text?.toString() ?: ""
+        val description: String =  editTextDesc?.text?.toString() ?: ""
+        val architects: String =  editTextArchitects?.text?.toString() ?: ""
+        val cost: String =  editTextCost?.text?.toString() ?: ""
+        val website: String =  editTextWebsite?.text?.toString() ?: ""
+        val imageURL: String =  editTextImageURL?.text?.toString() ?: ""
 
         val parameters = mapOf(
-            "movieID" to movieID,
-            "title" to title,
-            "studio" to studio,
-            "genres" to genres,
-            "directors" to directors,
-            "writers" to writers,
-            "actors" to actors,
-            "year" to year,
-            "length" to length,
-            "shortDescription" to shortDescription,
-            "mpaRating" to mpaRating,
-            "criticsRating" to criticsRating,
-            "posterLink" to posterLink
+            "name" to name,
+            "type" to type,
+            "dateBuilt" to dateBuilt,
+            "city" to city,
+            "country" to country,
+            "description" to description,
+            "architects" to architects,
+            "cost" to cost,
+            "website" to website,
+            "imageURL" to imageURL
         )
 
         val bearerAndAuth = "Bearer $auth"
 
         if (dirty) {
             //dirty means it has data.
-            iodbUpdate.updateMovie( bearerAndAuth, movieUUID, parameters)
+            iodbUpdate.updateItem( bearerAndAuth, itemUUID, parameters)
         } else {
             //no data .. add.
-            iodbAdd.addMovie(bearerAndAuth, parameters)
+            iodbAdd.addItem(bearerAndAuth, parameters)
         }
 
     }
 
-    override fun onUSuccess(response: MovieResponseWrapper) {
-        startActivity(Intent(this@Entry, Movielisting::class.java))
+    override fun onUSuccess(response: ItemResponseWrapper) {
+        startActivity(Intent(this@Entry, ItemListing::class.java))
     }
 
-    override fun onUFailure(call: Call<MovieResponseWrapper>, t: Throwable) {
+    override fun onUFailure(call: Call<ItemResponseWrapper>, t: Throwable) {
         Log.d("mdev1004s23A4", "RB - Update Fail.", t)
     }
 
-    override fun onASuccess(response: MovieResponseWrapper) {
-        startActivity(Intent(this@Entry, Movielisting::class.java))
+    override fun onASuccess(response: ItemResponseWrapper) {
+        startActivity(Intent(this@Entry, ItemListing::class.java))
     }
 
-    override fun onAFailure(call: Call<MovieResponseWrapper>, t: Throwable) {
+    override fun onAFailure(call: Call<ItemResponseWrapper>, t: Throwable) {
         Log.d("mdev1004s23A4", "RB - Network Error.", t)
     }
-
 
 }

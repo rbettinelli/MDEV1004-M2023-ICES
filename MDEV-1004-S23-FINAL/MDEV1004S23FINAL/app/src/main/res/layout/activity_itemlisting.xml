@@ -17,7 +17,7 @@
         android:contentDescription="@string/app_name"
         android:fontFamily="@font/nunito_sans"
         android:gravity="center"
-        android:text="Movie Listing"
+        android:text="@string/appTitle"
         android:textColor="@color/purple_200"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"

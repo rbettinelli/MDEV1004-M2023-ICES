@@ -1,4 +1,4 @@
-package com.example.mdev1004s23A4
+package com.example.mdev1004s23FINAL
 
 // -------------------------------------------------------------
 // - Robert Bettinelli - MDEV1004 - S2023
@@ -10,45 +10,34 @@ package com.example.mdev1004s23A4
 // -------------------------------------------------------------
 import java.io.Serializable
 
-data class Movie(
+data class MyItem(
     val _id: String,
-    val movieID: Int,
-    val title: String,
-    val studio: String,
-    val genres: List<String>,
-    val directors: List<String>,
-    val writers: List<String>,
-    val actors: List<String>,
-    val year: Int,
-    val length: String,
-    val shortDescription: String,
-    val mpaRating: String,
-    val criticsRating: Double,
-    val posterLink: String
+    val name: String,
+    val type: String,
+    val dateBuilt: String,
+    val city: String,
+    val country: String,
+    val description: String,
+    val architects: List<String>,
+    val cost: String,
+    val website: String,
+    val imageURL: String
 ) : Serializable
 
-data class MovieResponse(
+data class ItemResponse(
     val success: Boolean,
     val msg: String,
-    val data: MutableList<Movie>
+    val data: MutableList<MyItem>
 )
 
-data class MovieResponseWrapper(
+data class ItemResponseWrapper(
     val success: Boolean,
     val msg: String,
-    val data: Movie
+    val data: MyItem
 )
 
-data class MovieDeleteWrapper(
+data class ItemDeleteWrapper(
     val success: Boolean,
     val msg: String,
     val data: String
-)
-
-data class PaymentWrapper(
-    val success: Boolean,
-    val msg: String,
-    val clientSecret: String,
-    val customer: String,
-    val publishableKey: String
 )

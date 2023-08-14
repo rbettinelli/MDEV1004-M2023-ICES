@@ -19,7 +19,7 @@ interface ImyItem {
   country: string;
   description: string;
   architects: string[];
-  cost: number;
+  cost: string;
   website: string;
   imageURL: string;
 }
@@ -55,7 +55,7 @@ const itemSchema = new Schema<ImyItem>({
     required: true,
   },
   cost: {
-    type: Number,
+    type: String,
     required: true,
   },
   website: {

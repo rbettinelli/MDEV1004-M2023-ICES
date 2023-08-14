@@ -16,20 +16,20 @@ import retrofit2.Call
 import android.util.Log
 import android.widget.ImageButton
 
-class Movielisting : AppCompatActivity(), MovieListApiResponseCallback, MovieDeleteApiResponseCallback {
+class ItemListing : AppCompatActivity(), ItemListApiResponseCallback, ItemDeleteApiResponseCallback {
 
     //Var
     private val comLib = LibCom()
-    private val iodbList = IOdbMovieList(this)
-    private val iodbDelete = IOdbMovieDelete(this)
-    private lateinit var movieAdapter: MovieAdapter
+    private val iodbList = IOdbItemList(this)
+    private val iodbDelete = IOdbItemDelete(this)
+    private lateinit var itemAdapter: ItemAdapter
     private var btnMAdd: ImageButton? = null
-    private var delMovieSelected: Movie = Movie("", 0, "", "", listOf(), listOf(), listOf(), listOf(), 0, "", "", "", 0.0, "")
+    private var delItemSelected: MyItem = MyItem("", "", "", "", "", "","",emptyList() ,"","","")
 
     // Main Setup Auth Grab view and buttons.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movielisting)
+        setContentView(R.layout.activity_itemlisting)
         btnMAdd = findViewById(R.id.ibAdd)
         btnMAdd?.setOnClickListener { _ -> addMovie() }
 
@@ -37,46 +37,46 @@ class Movielisting : AppCompatActivity(), MovieListApiResponseCallback, MovieDel
         val bearerAndAuth = "Bearer $auth"
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        movieAdapter = MovieAdapter(mutableListOf()) { movie ->
+        itemAdapter = ItemAdapter(mutableListOf()) { item ->
             // Handle the delete button click here
-            deleteMovie(movie)
+            deleteItem(item)
         }
-        recyclerView.adapter = movieAdapter
-        iodbList.getMovieList(bearerAndAuth)
+        recyclerView.adapter = itemAdapter
+        iodbList.getItemList(bearerAndAuth)
     }
 
     // Delete Movie Button.
-    private fun deleteMovie(movie: Movie) {
+    private fun deleteItem(item: MyItem) {
         // Implement your logic to delete the movie
         // Update the dataset and notify adapter if needed
         Log.d("crap","Delete!")
         val auth: String = comLib.sharePRead(applicationContext,"auth").toString()
         val bearerAndAuth = "Bearer $auth"
-        delMovieSelected = movie
-        iodbDelete.deleteMovie(bearerAndAuth, movie._id)
+        delItemSelected = item
+        iodbDelete.deleteItem(bearerAndAuth, item._id)
     }
 
     // Add Function if Add Success / Fails.
-    override fun onSuccess(response: MovieResponse) {
+    override fun onSuccess(response: ItemResponse) {
 
-        val movies = response.data
-        movieAdapter.movies = movies
-        movieAdapter.notifyDataSetChanged()
+        val items = response.data
+        itemAdapter.items = items
+        itemAdapter.notifyDataSetChanged()
 
         // Applying OnClickListener to our Adapter
-        movieAdapter.setOnClickListener(object :
-            MovieAdapter.OnClickListener {
-            override fun onClick(position: Int, model: Movie) {
-                val intent = Intent(this@Movielisting, Entry::class.java)
+        itemAdapter.setOnClickListener(object :
+            ItemAdapter.OnClickListener {
+            override fun onClick(position: Int, model: MyItem) {
+                val intent = Intent(this@ItemListing, Entry::class.java)
                 // Passing the data to the
                 // EmployeeDetails Activity
-                intent.putExtra("movie", model)
+                intent.putExtra("item", model)
                 startActivity(intent)
             }
         })
     }
 
-    override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+    override fun onFailure(call: Call<ItemResponse>, t: Throwable) {
         // Handle login failure here
         // Show an error message, log the error, etc.
         Log.d("crap","JSON Call Error")
@@ -85,17 +85,17 @@ class Movielisting : AppCompatActivity(), MovieListApiResponseCallback, MovieDel
 
     // Add Movie Button.. Jump to Add movie
     private fun addMovie() {
-        startActivity(Intent(this@Movielisting, Entry::class.java))
+        startActivity(Intent(this@ItemListing, Entry::class.java))
     }
 
 
     // Delete Functions if Delete Success / Fails.
-    override fun onDSuccess(response: MovieDeleteWrapper) {
-        movieAdapter.remove(delMovieSelected)
+    override fun onDSuccess(response: ItemDeleteWrapper) {
+        itemAdapter.remove(delItemSelected)
         Log.d("crap","Delete Successful")
     }
 
-    override fun onDFailure(call: Call<MovieDeleteWrapper>, t: Throwable) {
+    override fun onDFailure(call: Call<ItemDeleteWrapper>, t: Throwable) {
         Log.d("crap","Delete Error")
         comLib.showAlert(this, "Error", "Could Not Delete Movie.")
     }

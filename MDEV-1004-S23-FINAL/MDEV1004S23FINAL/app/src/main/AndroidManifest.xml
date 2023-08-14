@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.mdev1004s23A4">
+    package="com.example.mdev1004s23FINAL">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -20,19 +20,19 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name="com.example.mdev1004s23A4.Movielisting"
+            android:name="com.example.mdev1004s23FINAL.ItemListing"
             android:exported="false" />
         <activity
-            android:name="com.example.mdev1004s23A4.Entry"
+            android:name="com.example.mdev1004s23FINAL.Entry"
             android:exported="false" />
         <activity
-            android:name="com.example.mdev1004s23A4.Registration"
+            android:name="com.example.mdev1004s23FINAL.Registration"
             android:exported="false" />
         <activity
-            android:name="com.example.mdev1004s23A4.Login"
+            android:name="com.example.mdev1004s23FINAL.Login"
             android:exported="false" />
         <activity
-            android:name="com.example.mdev1004s23A4.MainActivity"
+            android:name="com.example.mdev1004s23FINAL.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

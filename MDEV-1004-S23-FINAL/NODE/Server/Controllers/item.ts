@@ -33,7 +33,6 @@ export function DisplayList(
   next: NextFunction
 ): void {
   MyItem.find({})
-    .sort({ name: 1 })
     .then(function (data) {
       res
         .status(200)
@@ -54,7 +53,6 @@ export function DisplayListItems(
   next: NextFunction
 ): void {
   MyItem.find({}, { name: 1, title: 1 })
-    .sort({ name: 1 })
     .then(function (data) {
       res.status(200).json({ success: true, msg: "List Found.", data: data });
     })
@@ -110,8 +108,6 @@ export function AddItem(req: Request, res: Response, next: NextFunction): void {
   // For unlimited Array of items.
   try {
     let architects = SanitizeArray(req.body.architects as string);
-    let parsedCost = parseFloat(req.body.cost);
-    let cost = isNaN(parsedCost) ? 0.0 : parsedCost;
 
     // Populates movie with data from API.
     let item = new MyItem({
@@ -122,7 +118,7 @@ export function AddItem(req: Request, res: Response, next: NextFunction): void {
       country: req.body.country,
       description: req.body.description,
       architects: architects,
-      cost: cost,
+      cost: req.body.cost,
       website: req.body.website,
       imageURL: req.body.imageURL,
     });
@@ -165,11 +161,10 @@ export function UpdateItem(
   try {
     let id = req.params.id;
     let architects = SanitizeArray(req.body.architects as string);
-    let parsedCost = parseFloat(req.body.cost);
-    let cost = isNaN(parsedCost) ? 0.0 : parsedCost;
 
     // Populates movie with data from API.
     let itemToUpdate = new MyItem({
+      _id: id,
       name: req.body.name,
       type: req.body.type,
       dateBuilt: req.body.dateBuilt,
@@ -177,7 +172,7 @@ export function UpdateItem(
       country: req.body.country,
       description: req.body.description,
       architects: architects,
-      cost: cost,
+      cost: req.body.cost,
       website: req.body.website,
       imageURL: req.body.imageURL,
     });

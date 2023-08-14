@@ -19,7 +19,6 @@ function SanitizeArray(unsanitizedValue) {
 }
 function DisplayList(req, res, next) {
     item_1.default.find({})
-        .sort({ name: 1 })
         .then(function (data) {
         res
             .status(200)
@@ -35,7 +34,6 @@ function DisplayList(req, res, next) {
 exports.DisplayList = DisplayList;
 function DisplayListItems(req, res, next) {
     item_1.default.find({}, { name: 1, title: 1 })
-        .sort({ name: 1 })
         .then(function (data) {
         res.status(200).json({ success: true, msg: "List Found.", data: data });
     })
@@ -85,8 +83,6 @@ exports.DisplayItemByID = DisplayItemByID;
 function AddItem(req, res, next) {
     try {
         let architects = SanitizeArray(req.body.architects);
-        let parsedCost = parseFloat(req.body.cost);
-        let cost = isNaN(parsedCost) ? 0.0 : parsedCost;
         let item = new item_1.default({
             name: req.body.name,
             type: req.body.type,
@@ -95,7 +91,7 @@ function AddItem(req, res, next) {
             country: req.body.country,
             description: req.body.description,
             architects: architects,
-            cost: cost,
+            cost: req.body.cost,
             website: req.body.website,
             imageURL: req.body.imageURL,
         });
@@ -133,9 +129,8 @@ function UpdateItem(req, res, next) {
     try {
         let id = req.params.id;
         let architects = SanitizeArray(req.body.architects);
-        let parsedCost = parseFloat(req.body.cost);
-        let cost = isNaN(parsedCost) ? 0.0 : parsedCost;
         let itemToUpdate = new item_1.default({
+            _id: id,
             name: req.body.name,
             type: req.body.type,
             dateBuilt: req.body.dateBuilt,
@@ -143,7 +138,7 @@ function UpdateItem(req, res, next) {
             country: req.body.country,
             description: req.body.description,
             architects: architects,
-            cost: cost,
+            cost: req.body.cost,
             website: req.body.website,
             imageURL: req.body.imageURL,
         });

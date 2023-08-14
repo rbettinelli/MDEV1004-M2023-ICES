@@ -31,7 +31,7 @@ const itemSchema = new mongoose_1.Schema({
         required: true,
     },
     cost: {
-        type: Number,
+        type: String,
         required: true,
     },
     website: {
