@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MDEV1004S23" parent="Theme.MaterialComponents.Light.NoActionBar" />
+
+</resources>
