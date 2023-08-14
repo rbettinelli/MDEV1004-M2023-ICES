@@ -10,7 +10,7 @@
 
 import { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
-import Movie from "../Models/movie";
+import MyItem from "../Models/item";
 
 // UTILITY
 // Takes Array and removes spaces @ Front and End
@@ -26,14 +26,14 @@ function SanitizeArray(unsanitizedValue: string | string[]): string[] {
 
 // API FUNCTIONS
 
-// Pull All Mongo Movies Database Documents and Outputs.
-export function DisplayMovieList(
+// Pull All Mongo Database Documents and Outputs.
+export function DisplayList(
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
-  Movie.find({})
-    .sort({ movieID: 1 })
+  MyItem.find({})
+    .sort({ name: 1 })
     .then(function (data) {
       res
         .status(200)
@@ -47,47 +47,45 @@ export function DisplayMovieList(
     });
 }
 
-// Pull All Mongo Movie Titles Database Documents and Outputs.
-export function DisplayMovieListTitle(
+// Pull All Mongo Item Database Documents and Outputs.
+export function DisplayListItems(
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
-  Movie.find({}, { movieID: 1, title: 1 })
-    .sort({ movieID: 1 })
+  MyItem.find({}, { name: 1, title: 1 })
+    .sort({ name: 1 })
     .then(function (data) {
-      res
-        .status(200)
-        .json({ success: true, msg: "Title List Found.", data: data });
+      res.status(200).json({ success: true, msg: "List Found.", data: data });
     })
     .catch(function (err) {
       console.error(err);
       res.status(404).json({
         success: false,
-        msg: "ERROR: No Title List Data.",
+        msg: "ERROR: No List Data.",
         data: null,
       });
     });
 }
 
 // Find Movie by ID in MongoDB and Outputs.
-export function DisplayMovieByID(
+export function DisplayItemByID(
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
   try {
     let id = req.params.id;
-    Movie.findById({ _id: id })
+    MyItem.findById({ _id: id })
       .then(function (data) {
         if (data) {
           res
             .status(200)
-            .json({ success: true, msg: "Movie Found.", data: data });
+            .json({ success: true, msg: "Item Found.", data: data });
         } else {
           res
             .status(404)
-            .json({ success: false, msg: "ERROR: No Movie Data.", data: data });
+            .json({ success: false, msg: "ERROR: No Item Data.", data: data });
         }
       })
       .catch(function (err) {
@@ -107,64 +105,45 @@ export function DisplayMovieByID(
 }
 
 // Add Movie to MongoDB and Returns Move output.
-export function AddMovie(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void {
+export function AddItem(req: Request, res: Response, next: NextFunction): void {
   // This section will take in-line Entry and Splits then Sanitizes
   // For unlimited Array of items.
   try {
-    let genres = SanitizeArray(req.body.genres as string);
-    let directors = SanitizeArray(req.body.directors as string);
-    let writers = SanitizeArray(req.body.writers as string);
-    let actors = SanitizeArray(req.body.actors as string);
-
-    let parsedCriticRating = parseFloat(req.body.criticsRating);
-    let criticsRating = isNaN(parsedCriticRating) ? 0.0 : parsedCriticRating;
-
-    let parsedID = parseInt(req.body.movieID);
-    let pid = isNaN(parsedID) ? 0 : parsedID;
-
-    let parsedYear = parseInt(req.body.year);
-    let year = isNaN(parsedYear) ? 0 : parsedYear;
+    let architects = SanitizeArray(req.body.architects as string);
+    let parsedCost = parseFloat(req.body.cost);
+    let cost = isNaN(parsedCost) ? 0.0 : parsedCost;
 
     // Populates movie with data from API.
-    let movie = new Movie({
-      movieID: pid,
-      title: req.body.title,
-      studio: req.body.studio,
-      genres: genres,
-      directors: directors,
-      writers: writers,
-      actors: actors,
-      length: req.body.length,
-      year: year,
-      shortDescription: req.body.shortDescription,
-      mpaRating: req.body.mpaRating,
-      criticsRating: criticsRating,
-      posterLink: req.body.posterLink,
+    let item = new MyItem({
+      name: req.body.name,
+      type: req.body.type,
+      dateBuilt: req.body.dateBuilt,
+      city: req.body.city,
+      country: req.body.country,
+      description: req.body.description,
+      architects: architects,
+      cost: cost,
+      website: req.body.website,
+      imageURL: req.body.imageURL,
     });
 
     // Post Data.
-    Movie.create(movie)
+    MyItem.create(item)
       .then(function () {
-        res
-          .status(200)
-          .json({ success: true, msg: "Movie Added.", data: movie });
+        res.status(200).json({ success: true, msg: "Item Added.", data: item });
       })
       .catch(function (err) {
         console.error(err);
         if (err instanceof mongoose.Error.ValidationError) {
           res.status(400).json({
             success: false,
-            msg: "ERROR: Movie not added. All Fields Required",
+            msg: "ERROR: Item not added. All Fields Required",
             data: null,
           });
         } else {
           res.status(400).json({
             success: false,
-            msg: "ERROR: Movie not added. Other Error.",
+            msg: "ERROR: Item not added. Other Error.",
             data: null,
           });
         }
@@ -178,49 +157,36 @@ export function AddMovie(
 }
 
 // See ADD functionality Above with the addition it only updated by _id
-export function UpdateMovie(
+export function UpdateItem(
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
   try {
     let id = req.params.id;
-    let genres = SanitizeArray(req.body.genres as string);
-    let directors = SanitizeArray(req.body.directors as string);
-    let writers = SanitizeArray(req.body.writers as string);
-    let actors = SanitizeArray(req.body.actors as string);
+    let architects = SanitizeArray(req.body.architects as string);
+    let parsedCost = parseFloat(req.body.cost);
+    let cost = isNaN(parsedCost) ? 0.0 : parsedCost;
 
-    let parsedCriticRating = parseFloat(req.body.criticsRating);
-    let criticsRating = isNaN(parsedCriticRating) ? 0.0 : parsedCriticRating;
-
-    let parsedID = parseInt(req.body.movieID);
-    let pid = isNaN(parsedID) ? 0 : parsedID;
-
-    let parsedYear = parseInt(req.body.year);
-    let year = isNaN(parsedYear) ? 0 : parsedYear;
-
-    let movieToUpdate = new Movie({
-      _id: id,
-      movieID: pid,
-      title: req.body.title,
-      studio: req.body.studio,
-      genres: genres,
-      directors: directors,
-      writers: writers,
-      actors: actors,
-      length: req.body.length,
-      year: year,
-      shortDescription: req.body.shortDescription,
-      mpaRating: req.body.mpaRating,
-      criticsRating: criticsRating,
-      posterLink: req.body.posterLink,
+    // Populates movie with data from API.
+    let itemToUpdate = new MyItem({
+      name: req.body.name,
+      type: req.body.type,
+      dateBuilt: req.body.dateBuilt,
+      city: req.body.city,
+      country: req.body.country,
+      description: req.body.description,
+      architects: architects,
+      cost: cost,
+      website: req.body.website,
+      imageURL: req.body.imageURL,
     });
 
-    Movie.updateOne({ _id: id }, movieToUpdate)
+    MyItem.updateOne({ _id: id }, itemToUpdate)
       .then(function () {
         res
           .status(200)
-          .json({ success: true, msg: "Movie Updated.", data: movieToUpdate });
+          .json({ success: true, msg: "Item Updated.", data: itemToUpdate });
         console.log("Updated!");
       })
       .catch(function (err) {
@@ -228,13 +194,13 @@ export function UpdateMovie(
         if (err instanceof mongoose.Error.ValidationError) {
           res.status(400).json({
             success: false,
-            msg: "ERROR: Movie not updated. All Fields Required",
+            msg: "ERROR: Item not updated. All Fields Required",
             data: null,
           });
         } else {
           res.status(400).json({
             success: false,
-            msg: "ERROR: Movie not updated. id Bad?",
+            msg: "ERROR: Item not updated. id Bad?",
             data: null,
           });
         }
@@ -248,18 +214,16 @@ export function UpdateMovie(
 }
 
 // Delete movie based on _id
-export function DeleteMovie(
+export function DeleteItem(
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
   let id = req.params.id;
   try {
-    Movie.deleteOne({ _id: id })
+    MyItem.deleteOne({ _id: id })
       .then(function () {
-        res
-          .status(200)
-          .json({ success: true, msg: "Movie Removed.", data: id });
+        res.status(200).json({ success: true, msg: "Item Removed.", data: id });
       })
       .catch(function (err) {
         res.status(400).json({

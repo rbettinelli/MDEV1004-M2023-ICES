@@ -9,9 +9,9 @@
 // -------------------------------------------------------------
 
 // Connection Setup for MongoDB Locations.
-let localURI = "mongodb://localhost:27017/movies";
+let localURI = "mongodb://localhost:27017/buildings";
 let remoteURI =
-  "mongodb+srv://robertbettinelli:k9P5Zy44TKJZsGls@cluster0.z16ahlj.mongodb.net/movies";
+  "mongodb+srv://robertbettinelli:k9P5Zy44TKJZsGls@cluster0.z16ahlj.mongodb.net/buildings";
 let secret = "#mySecret2023!";
 
 export default {

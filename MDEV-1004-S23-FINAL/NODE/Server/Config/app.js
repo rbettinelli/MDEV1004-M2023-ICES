@@ -9,7 +9,6 @@ const morgan_1 = __importDefault(require("morgan"));
 const index_1 = __importDefault(require("../Routes/index"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const db_1 = __importDefault(require("./db"));
-require("dotenv/config");
 const express_session_1 = __importDefault(require("express-session"));
 const passport_1 = __importDefault(require("passport"));
 const passport_local_1 = __importDefault(require("passport-local"));

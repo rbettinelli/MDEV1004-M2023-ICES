@@ -15,7 +15,6 @@ import logger from "morgan";
 import indexRouter from "../Routes/index";
 import mongoose from "mongoose";
 import db from "./db";
-import "dotenv/config";
 
 // Modules for Auth.
 import session from "express-session";

@@ -10,80 +10,65 @@
 
 import { Schema, model } from "mongoose";
 
-// Movie interface for Collecting data in specific types.
-interface IMovie {
-  movieID: number;
-  title: string;
-  studio: string;
-  genres: string[];
-  directors: string[];
-  writers: string[];
-  actors: string[];
-  year: number;
-  length: string;
-  shortDescription: string;
-  mpaRating: string;
-  criticsRating: number;
-  posterLink: string;
+// Interface for Collecting data in specific types.
+interface ImyItem {
+  name: string;
+  type: string;
+  dateBuilt: string;
+  city: string;
+  country: string;
+  description: string;
+  architects: string[];
+  cost: number;
+  website: string;
+  imageURL: string;
 }
 
 // Mongo DB schema Setup
-const movieSchema = new Schema<IMovie>({
-  movieID: {
+const itemSchema = new Schema<ImyItem>({
+  name: {
+    type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
+  },
+  dateBuilt: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
+  country: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  architects: {
+    type: [String],
+    required: true,
+  },
+  cost: {
     type: Number,
     required: true,
   },
-  title: {
+  website: {
     type: String,
     required: true,
   },
-  studio: {
-    type: String,
-    required: true,
-  },
-  genres: {
-    type: [String],
-    required: true,
-  },
-  directors: {
-    type: [String],
-    required: true,
-  },
-  writers: {
-    type: [String],
-    required: true,
-  },
-  actors: {
-    type: [String],
-    required: true,
-  },
-  year: {
-    type: Number,
-    required: true,
-  },
-  length: {
-    type: String,
-    required: true,
-  },
-  shortDescription: {
-    type: String,
-    required: true,
-  },
-  mpaRating: {
-    type: String,
-    required: true,
-  },
-  criticsRating: {
-    type: Number,
-    required: true,
-  },
-  posterLink: {
+  imageURL: {
     type: String,
     required: true,
   },
 });
 
 // Build Model Object as Interface utilizing Schema.
-let Movie = model<IMovie>("movies", movieSchema);
+let MyItem = model<ImyItem>("buildings", itemSchema);
 
-export default Movie;
+export default MyItem;

@@ -14,58 +14,55 @@ let router = express.Router();
 import passport from "passport";
 
 import {
-  DisplayMovieList,
-  DisplayMovieByID,
-  AddMovie,
-  UpdateMovie,
-  DeleteMovie,
-  DisplayMovieListTitle,
-} from "../Controllers/movie";
+  DisplayList,
+  DisplayItemByID,
+  AddItem,
+  UpdateItem,
+  DeleteItem,
+  DisplayListItems,
+} from "../Controllers/item";
 import {
   ProcessRegistration,
   ProcessLogin,
   ProcessLogout,
 } from "../Controllers/login";
-import { CreatePaymentIntent } from "../Controllers/stripe";
 
-// Movie List Route
+// Item Complete List Route (Secured)
 router.get(
   "/list",
   passport.authenticate("jwt", { session: false }),
-  (req, res, next) => DisplayMovieList(req, res, next)
+  (req, res, next) => DisplayList(req, res, next)
 );
 
-// Movie List movieID & Titles Route
-router.get("/listTitle", (req, res, next) =>
-  DisplayMovieListTitle(req, res, next)
-);
+// Movie Summary List Items (UnSecured)
+router.get("/listItems", (req, res, next) => DisplayListItems(req, res, next));
 
 // Find By ID Route
 router.get(
   "/find/:id",
   passport.authenticate("jwt", { session: false }),
-  (req, res, next) => DisplayMovieByID(req, res, next)
+  (req, res, next) => DisplayItemByID(req, res, next)
 );
 
 // Add Document Route
 router.post(
   "/add",
   passport.authenticate("jwt", { session: false }),
-  (req, res, next) => AddMovie(req, res, next)
+  (req, res, next) => AddItem(req, res, next)
 );
 
 // Delete By ID Route
 router.delete(
   "/delete/:id",
   passport.authenticate("jwt", { session: false }),
-  (req, res, next) => DeleteMovie(req, res, next)
+  (req, res, next) => DeleteItem(req, res, next)
 );
 
 // Update Document By ID Route
 router.put(
   "/update/:id",
   passport.authenticate("jwt", { session: false }),
-  (req, res, next) => UpdateMovie(req, res, next)
+  (req, res, next) => UpdateItem(req, res, next)
 );
 
 // AUTHENTICATE
@@ -80,11 +77,6 @@ router.post("/login", function (req, res, next) {
 
 router.get("/logout", function (req, res, next) {
   ProcessLogout(req, res, next);
-});
-
-/* POST /api/payment - process payment */
-router.post("/payment", function (req, res, next) {
-  CreatePaymentIntent(req, res, next);
 });
 
 export default router;

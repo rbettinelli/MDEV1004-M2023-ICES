@@ -16,7 +16,7 @@
 
 import app from "./Server/Config/app";
 import debug from "debug";
-debug("mdev-1004-s23-ice10:server");
+debug("mdev-1004-s23-final:server");
 import http from "http";
 import { HttpError } from "http-errors";
 import { AddressInfo } from "net";
